@@ -12,7 +12,7 @@ namespace ArticleAPI.Controllers
     {
   
         [HttpGet]
-        public IHttpActionResult Get() {
+        public IHttpActionResult GetAllUserRole() {
             using (var db = new EntityContext()) {
                 var user = db.UserRoles.ToList<UserRole>();
                 return Json(user);
@@ -20,7 +20,7 @@ namespace ArticleAPI.Controllers
               
         }
         [HttpGet]
-        public IHttpActionResult Get(int id) {
+        public IHttpActionResult GetUserroleById(int id) {
             if (id <= 0) {
                 return BadRequest();
             }
@@ -33,10 +33,9 @@ namespace ArticleAPI.Controllers
 
                 return Ok(userrole);
             }
-              
         }
         [HttpPost]
-        public IHttpActionResult Post([FromBody] UserRole userole) {
+        public IHttpActionResult PostUserrole([FromBody] UserRole userole) {
             using (var db = new EntityContext()) {
                 db.UserRoles.Add(userole);
                 db.SaveChanges();
@@ -47,7 +46,7 @@ namespace ArticleAPI.Controllers
         }
 
         [HttpDelete]
-        public IHttpActionResult Delete(short id) {
+        public IHttpActionResult DeleteuserroleById(short id) {
             if (id <= 0) {
                 return BadRequest();
             }
@@ -66,7 +65,7 @@ namespace ArticleAPI.Controllers
         }
 
         [HttpPut]
-        public IHttpActionResult Put(UserRole userrole) {
+        public IHttpActionResult PutUserrole(UserRole userrole) {
             using (var db = new EntityContext()) {
                 var useroleupdate = db.UserRoles.Find(userrole.id);
                 if (useroleupdate != null)

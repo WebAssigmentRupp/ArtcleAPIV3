@@ -12,9 +12,9 @@ namespace ArticleAPI
         //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         //public ArtUser()
         //{
-        //    menus = new HashSet<menu>();
-        //    pages = new HashSet<page>();
-        //    posts = new HashSet<post>();
+        //    //menus = new HashSet<menu>();
+        //    //pages = new HashSet<page>();
+        //    //posts = new HashSet<post>();
         //}
 
         public short id { get; set; }

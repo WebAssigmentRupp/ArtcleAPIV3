@@ -9,11 +9,10 @@ namespace ArticleAPI.Controllers
 {
     public class UserController : ApiController
     {
-
-
-
+       
+ 
         [HttpGet]
-        public IHttpActionResult GetAllUser() {
+        public IHttpActionResult GetAllUsers() {
 
             using (var db = new EntityContext()) {
                 var users = db.ArtUsers.ToList<ArtUser>();
@@ -21,9 +20,10 @@ namespace ArticleAPI.Controllers
             }
 
         }
-
+        
+    
         [HttpGet]
-        public IHttpActionResult Get(short id)
+        public IHttpActionResult GetUserById(short id)
         {
             if (id < 0)
             {
@@ -41,6 +41,8 @@ namespace ArticleAPI.Controllers
                
         }
 
+      
+
         [HttpPost]
         public IHttpActionResult PostUser([FromBody] ArtUser user)
         {
@@ -53,8 +55,10 @@ namespace ArticleAPI.Controllers
            
         }
 
+       
+
         [HttpDelete]
-        public IHttpActionResult Delete(short id)
+        public IHttpActionResult DeleteUserById(short id)
         {
             if (id <= 0)
             {
@@ -74,8 +78,9 @@ namespace ArticleAPI.Controllers
                
         }
 
+
         [HttpPut]
-        public IHttpActionResult Put(ArtUser user)
+        public IHttpActionResult PutUser(ArtUser user)
         {
             using (var db = new EntityContext())
             {
@@ -97,5 +102,14 @@ namespace ArticleAPI.Controllers
 
         }
 
+
+        [HttpGet]
+        public IHttpActionResult GetSession([FromBody] string name,[FromBody] string password) {
+
+            return Ok(name);
+        }
+
+
+      
         }
 }
