@@ -18,6 +18,7 @@ namespace ArticleAPI.Controllers
  
             public DateTime post_date { get; set; }
             public string author { get; set; }
+            public short cat_id { get; set; }
             public string category_name { get; set; }
             public String username { get; set; }
 
@@ -52,6 +53,7 @@ namespace ArticleAPI.Controllers
                                   a.texts,
                                   a.image,
                                   a.post_date,
+                                  a.category_id As cat_id,
                                   b.name As category_name,
                                   c.name As username,
                                   a.author 
@@ -78,14 +80,15 @@ namespace ArticleAPI.Controllers
                                   a.texts,
                                   a.image,
                                   a.post_date,
-                                  b.name As CategoryName,
-                                  c.name As UserName,
+                                  a.category_id As cat_id,
+                                  b.name As category_name,
+                                  c.name As username,
                                   a.author 
                                   FROM post a 
                                        INNER JOIN category b ON a.category_id = b.id 
-                                       INNER JOIN ArtUser c ON a.user_id=c.id WHERE a.id="+id;
+                                       INNER JOIN ArtUser c ON a.user_id=c.id WHERE a.id=" + id;
 
-                var posts = db.Database.SqlQuery<mappingData>(sql).ToList();
+                var posts = db.Database.SqlQuery<mappingData>(sql).Single();
                 if (posts == null)
                 {
                     return NotFound();
@@ -108,6 +111,8 @@ namespace ArticleAPI.Controllers
                 p.image = post.image;
                 p.post_date = post.post_date;
                 p.author = post.author;
+                p.category_id = post.category_id;
+                p.user_id = post.user_id;
                 db.Entry(p).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
                 return Ok(p);
