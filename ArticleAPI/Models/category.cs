@@ -9,11 +9,11 @@ namespace ArticleAPI
     [Table("category")]
     public partial class category
     {
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        //public category()
-        //{
-        //    posts = new HashSet<post>();
-        //}
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public category()
+        {
+            posts = new HashSet<post>();
+        }
 
         public short id { get; set; }
 
@@ -24,7 +24,7 @@ namespace ArticleAPI
         [StringLength(50)]
         public string description { get; set; }
 
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        //public virtual ICollection<post> posts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<post> posts { get; set; }
     }
 }

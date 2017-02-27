@@ -4,15 +4,30 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-
+using System.Data.Entity;
 namespace ArticleAPI.Controllers
 {
     public class PostController : ApiController
     {
-       
+        internal class mappingData {
+            public short id { get; set; }
+            public string title { get; set; }
+            public string texts { get; set; }
+
+            public string image { get; set; }
+ 
+            public DateTime post_date { get; set; }
+            public string author { get; set; }
+            public string category_name { get; set; }
+            public String username { get; set; }
+
+
+        }
+
 
         [HttpPost]
         public IHttpActionResult PostArticle(post post) {
+            post.post_date = DateTime.Now;
             using (var db=new EntityContext()) {
                 var p = db.posts.Add(post);
                 db.Entry(p).State = System.Data.Entity.EntityState.Added;
@@ -25,12 +40,28 @@ namespace ArticleAPI.Controllers
         [HttpGet]
         public IHttpActionResult GetAllPosts() {
             using (var db = new EntityContext()) {
-                var p = db.posts.ToList<post>();
-                if (p == null)
-                {
-                    return NotFound();
-                }
-                return Ok(p);
+                //var p = db.posts.ToList<post>();
+                //if (p == null)
+                //{
+                //    return NotFound();
+                //}
+                //return Ok(p);
+
+              string sql= @"SELECT a.id,
+                                  a.title,
+                                  a.texts,
+                                  a.image,
+                                  a.post_date,
+                                  b.name As category_name,
+                                  c.name As username,
+                                  a.author 
+                                  FROM post a 
+                                       INNER JOIN category b ON a.category_id = b.id 
+                                       INNER JOIN ArtUser c ON a.user_id=c.id";
+
+               var posts= db.Database.SqlQuery<mappingData>(sql).ToList();
+
+                return Ok(posts);
             }
                
         }
@@ -42,12 +73,24 @@ namespace ArticleAPI.Controllers
                 return BadRequest();
             }
             using (var db = new EntityContext()) {
-                var post = db.posts.Find(id);
-                if (post == null)
+                string sql = @"SELECT a.id,
+                                  a.title,
+                                  a.texts,
+                                  a.image,
+                                  a.post_date,
+                                  b.name As CategoryName,
+                                  c.name As UserName,
+                                  a.author 
+                                  FROM post a 
+                                       INNER JOIN category b ON a.category_id = b.id 
+                                       INNER JOIN ArtUser c ON a.user_id=c.id WHERE a.id="+id;
+
+                var posts = db.Database.SqlQuery<mappingData>(sql).ToList();
+                if (posts == null)
                 {
                     return NotFound();
                 }
-                return Ok(post);
+                return Ok(posts);
             }
               
         }

@@ -7,13 +7,13 @@ namespace ArticleAPI.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class initialModel : IMigrationMetadata
+    public sealed partial class updateField : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(initialModel));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(updateField));
         
         string IMigrationMetadata.Id
         {
-            get { return "201702081621443_initialModel"; }
+            get { return "201702270058254_updateField"; }
         }
         
         string IMigrationMetadata.Source

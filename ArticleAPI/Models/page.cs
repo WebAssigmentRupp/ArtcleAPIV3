@@ -9,16 +9,16 @@ namespace ArticleAPI
     [Table("page")]
     public partial class page
     {
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        //public page()
-        //{
-        //    menus = new HashSet<menu>();
-        //}
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public page()
+        {
+            menus = new HashSet<menu>();
+        }
 
         public short id { get; set; }
 
         [Required]
-        [StringLength(1)]
+        [StringLength(100)]
         public string url { get; set; }
 
         [Required]
@@ -33,9 +33,9 @@ namespace ArticleAPI
         [Column(TypeName = "date")]
         public DateTime created_date { get; set; }
 
-        //public virtual ArtUser ArtUser { get; set; }
+        public virtual ArtUser user { get; set; }
 
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        //public virtual ICollection<menu> menus { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<menu> menus { get; set; }
     }
 }

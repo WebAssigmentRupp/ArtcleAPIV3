@@ -147,6 +147,10 @@
   <ItemGroup>
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Migrations\201702270058254_updateField.cs" />
+    <Compile Include="Migrations\201702270058254_updateField.Designer.cs">
+      <DependentUpon>201702270058254_updateField.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ArtUser.cs" />
     <Compile Include="Models\category.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
@@ -161,10 +165,6 @@
     </Compile>
     <Compile Include="Models\Image.cs" />
     <Compile Include="Models\menu.cs" />
-    <Compile Include="Migrations\201702081621443_initialModel.cs" />
-    <Compile Include="Migrations\201702081621443_initialModel.Designer.cs">
-      <DependentUpon>201702081621443_initialModel.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\page.cs" />
     <Compile Include="Models\post.cs" />
@@ -187,8 +187,8 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201702081621443_initialModel.resx">
-      <DependentUpon>201702081621443_initialModel.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201702270058254_updateField.resx">
+      <DependentUpon>201702270058254_updateField.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

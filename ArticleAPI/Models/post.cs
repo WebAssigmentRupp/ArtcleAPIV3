@@ -31,8 +31,8 @@ namespace ArticleAPI
 
         public short? user_id { get; set; }
 
-        //public virtual ArtUser ArtUser { get; set; }
+        public virtual ArtUser user { get; set; }
 
-        //public virtual category category { get; set; }
+        public virtual category category { get; set; }
     }
 }

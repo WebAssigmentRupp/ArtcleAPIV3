@@ -4,24 +4,57 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Data.Entity;
 
 namespace ArticleAPI.Controllers
 {
     public class UserController : ApiController
     {
-       
- 
+        internal class MappingData
+        {
+            public short Id { get; set; }
+            public string Name { get; set; }
+            public string Email { get; set; }
+            public string Firstname { get; set; }
+            public string Lastname { get; set; }
+            public string Gender { get; set; }
+
+            public string Passwd { get; set; }
+            public String RoleName { get; set; }
+            public String RoleDescription { get; set; }
+        }
+
+
         [HttpGet]
         public IHttpActionResult GetAllUsers() {
 
-            using (var db = new EntityContext()) {
-                var users = db.ArtUsers.ToList<ArtUser>();
+            using (var db = new EntityContext())
+            {
+                //var users = db.ArtUsers.ToList();
+                //return Ok(users);
+
+                String sqlQuery = @"SELECT A.id, 
+                                           A.email, 
+                                           A.firstname, 
+                                           A.lastname, 
+                                           A.name, 
+                                           A.passwd,
+                                           A.gender, 
+                                           B.name AS RoleName,
+                                           B.description As RoleDescription 
+                                    FROM ArtUser A 
+                                    INNER JOIN UserRole B ON A.role_id = B.id";
+                var users = db.Database.SqlQuery<MappingData>(sqlQuery).ToList();
+
                 return Ok(users);
             }
 
+
         }
-        
+
+
     
+        
         [HttpGet]
         public IHttpActionResult GetUserById(short id)
         {
@@ -31,12 +64,23 @@ namespace ArticleAPI.Controllers
             }
             using (var db = new EntityContext())
             {
-                var user = db.ArtUsers.Find(id);
-                if (user == null)
+                String sqlQuery = @"SELECT A.id, 
+                                           A.email, 
+                                           A.firstname, 
+                                           A.lastname, 
+                                           A.name, 
+                                           A.passwd,
+                                           A.gender, 
+                                           B.name AS RoleName,
+                                           B.description As RoleDescription 
+                                    FROM ArtUser A 
+                                    INNER JOIN UserRole B ON A.role_id = B.id WHERE A.id="+id;
+                var users = db.Database.SqlQuery<MappingData>(sqlQuery).ToList();
+                if (users == null)
                 {
                     return NotFound();
                 }
-                return Ok(user);
+                return Ok(users);
             }
                
         }
@@ -55,8 +99,7 @@ namespace ArticleAPI.Controllers
            
         }
 
-       
-
+      
         [HttpDelete]
         public IHttpActionResult DeleteUserById(short id)
         {
@@ -104,9 +147,18 @@ namespace ArticleAPI.Controllers
 
 
         [HttpGet]
-        public IHttpActionResult GetSession([FromBody] string name,[FromBody] string password) {
+        public IHttpActionResult GetSession(string name,string password) {
 
-            return Ok(name);
+            using (var db=new EntityContext()) {
+                string sql = @"
+                               SELECT a.id,a.name,b.name as RoleName 
+                               FROM ArtUser a INNER JOIN UserRole b ON a.role_id=b.id WHERE a.name='" + name+"' and a.passwd='"+password+"'";
+
+                var userSession = db.Database.SqlQuery<MappingData>(sql).ToList();
+                return Ok(userSession);
+            }
+
+               
         }
 
 

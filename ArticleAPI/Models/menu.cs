@@ -9,11 +9,11 @@ namespace ArticleAPI
     [Table("menu")]
     public partial class menu
     {
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        //public menu()
-        //{
-        //    menu1 = new HashSet<menu>();
-        //}
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public menu()
+        {
+            submenu = new HashSet<menu>();
+        }
 
         public short id { get; set; }
 
@@ -27,13 +27,13 @@ namespace ArticleAPI
 
         public short page_id { get; set; }
 
-        //public virtual ArtUser ArtUser { get; set; }
+        public virtual ArtUser user { get; set; }
 
-        //public virtual page page { get; set; }
+        public virtual page page { get; set; }
 
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        //public virtual ICollection<menu> menu1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<menu> submenu { get; set; }
 
-        //public virtual menu menu2 { get; set; }
+        public virtual menu parent { get; set; }
     }
 }

@@ -9,13 +9,13 @@ namespace ArticleAPI
     [Table("ArtUser")]
     public partial class ArtUser
     {
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        //public ArtUser()
-        //{
-        //    //menus = new HashSet<menu>();
-        //    //pages = new HashSet<page>();
-        //    //posts = new HashSet<post>();
-        //}
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ArtUser()
+        {
+            menus = new HashSet<menu>();
+            pages = new HashSet<page>();
+            posts = new HashSet<post>();
+        }
 
         public short id { get; set; }
 
@@ -42,18 +42,15 @@ namespace ArticleAPI
         public string passwd { get; set; }
 
         public short role_id { get; set; }
+        public virtual UserRole role { get; set; }
 
-        //public virtual UserRole UserRole { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<menu> menus { get; set; }
 
-        //public virtual UserRole UserRole1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<page> pages { get; set; }
 
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        //public virtual ICollection<menu> menus { get; set; }
-
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        //public virtual ICollection<page> pages { get; set; }
-
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        //public virtual ICollection<post> posts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<post> posts { get; set; }
     }
 }
