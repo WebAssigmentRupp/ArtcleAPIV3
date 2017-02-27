@@ -149,13 +149,22 @@ namespace ArticleAPI.Controllers
         [HttpGet]
         public IHttpActionResult GetSession(string name,string password) {
 
+            System.Diagnostics.Debug.WriteLine(name + "|" + password);
+
             using (var db=new EntityContext()) {
                 string sql = @"
                                SELECT a.id,a.name,b.name as RoleName 
                                FROM ArtUser a INNER JOIN UserRole b ON a.role_id=b.id WHERE a.name='" + name+"' and a.passwd='"+password+"'";
-
-                var userSession = db.Database.SqlQuery<MappingData>(sql).ToList();
-                return Ok(userSession);
+                try
+                {
+                    var userSession = db.Database.SqlQuery<MappingData>(sql).Single();
+                    return Ok(userSession);
+                }
+                catch(Exception ex)
+                {
+                    return NotFound();
+                }
+                
             }
 
                
