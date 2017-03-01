@@ -9,6 +9,23 @@ namespace ArticleAPI.Controllers
 {
     public class MenuController : ApiController
     {
+        internal class MenuMap
+        {
+            public short id { get; set; }
+
+            public string title { get; set; }
+
+            public short? parent_id { get; set; }
+
+            public short user_id { get; set; }
+
+            public short page_id { get; set; }
+            public string parent_name { get; set; }
+
+            public string user { get; set; }
+
+            public string page { get; set; }
+        }
        
         [HttpPost]
         public IHttpActionResult Post(menu menu) {
@@ -30,6 +47,25 @@ namespace ArticleAPI.Controllers
                 {
                     return NotFound();
                 }
+                return Ok(menus);
+            }
+            
+        }
+        public IHttpActionResult GetList()
+        {
+            using (var db = new EntityContext())
+            {
+                String sqlQuery = @"SELECT M.id, 
+                                    M.title,  
+                                    P.title As page,
+                                    U.name As [user],
+                                    M.parent_id,
+                                    MP.title as parent_name
+                                    FROM menu M INNER JOIN ArtUser U ON M.user_id = U.id
+                                    LEFT JOIN page P ON M.page_id = P.id
+                                    LEFT JOIN menu MP ON M.parent_id = MP.id
+                                     ";
+                var menus = db.Database.SqlQuery<MenuMap>(sqlQuery).ToList();
                 return Ok(menus);
             }
             
