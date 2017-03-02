@@ -159,6 +159,36 @@ namespace ArticleAPI.Controllers
 
         }
 
+        [HttpPut]
+        public IHttpActionResult updatePassword(int userid, string old, string newp)
+        {
+            using (var db = new EntityContext())
+            {
+                var u = db.ArtUsers.Find(userid);
+                if(u == null)
+                {
+                    return Ok("Failed!");
+                }
+                if (u.passwd != old)
+                {
+                    return Ok("Failed!");
+                }
+                try
+                {
+                    u.passwd = newp;
+                    db.Entry(u).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    return Ok("Failed!");
+                    throw;
+                }
+                return Ok(u);
+            }
+
+        }
+
 
         [HttpGet]
         public IHttpActionResult GetSession(string name,string password) {
@@ -167,7 +197,7 @@ namespace ArticleAPI.Controllers
 
             using (var db=new EntityContext()) {
                 string sql = @"
-                               SELECT a.id,a.name,b.name as RoleName 
+                               SELECT a.id,a.name,b.name as RoleName, a.email, a.firstname, a.lastname, a.gender 
                                FROM ArtUser a INNER JOIN UserRole b ON a.role_id=b.id WHERE a.name='" + name+"' and a.passwd='"+password+"'";
                 try
                 {
