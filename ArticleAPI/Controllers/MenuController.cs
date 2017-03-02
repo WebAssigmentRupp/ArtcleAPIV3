@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Data.Entity;
 
 namespace ArticleAPI.Controllers
 {
@@ -33,19 +34,47 @@ namespace ArticleAPI.Controllers
 
                 var m = db.menus.Add(menu);
                 db.Entry(m).State = System.Data.Entity.EntityState.Added;
-                db.SaveChanges();
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    return Ok("Failed to saved");
+                    throw;
+                }
+                
                 return Ok(m);
             }
 
         }
-
+        private void addSub(EntityContext context, menu parent)
+        {
+            var ms = context.menus.Where(sm => sm.parent_id == parent.id).ToList();
+            if (ms == null)
+            {
+                return;
+            }
+            foreach (var sm in ms)
+            {
+                parent.submenu.Add(sm);
+            }
+            foreach (var m in parent.submenu)
+            {
+                addSub(context, m);
+            }
+        }
         [HttpGet]
         public IHttpActionResult Get() {
             using (var db = new EntityContext()) {
-                var menus = db.menus.ToList<menu>();
+                var menus = db.menus.Where(m => m.parent_id == null).ToList();
                 if (menus == null)
                 {
                     return NotFound();
+                }
+                foreach (var m in menus)
+                {
+                    addSub(db, m);
                 }
                 return Ok(menus);
             }
@@ -58,6 +87,7 @@ namespace ArticleAPI.Controllers
                 String sqlQuery = @"SELECT M.id, 
                                     M.title,  
                                     P.title As page,
+                                    M.page_id,
                                     U.name As [user],
                                     M.parent_id,
                                     MP.title as parent_name
@@ -95,10 +125,18 @@ namespace ArticleAPI.Controllers
                 {
                     return NotFound();
                 }
-                m.title = menu.title;
-                m.parent_id = menu.parent_id;
-                db.Entry(m).State = System.Data.Entity.EntityState.Modified;
-                db.SaveChanges();
+                try
+                {
+                    m.title = menu.title;
+                    m.parent_id = menu.parent_id;
+                    db.Entry(m).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+                catch(Exception ex)
+                {
+                    return Ok("Failed");
+                }
+                
                 return Ok(m);
             }
            
@@ -116,9 +154,18 @@ namespace ArticleAPI.Controllers
                 {
                     return NotFound();
                 }
-                db.menus.Remove(menu);
-                db.Entry(menu).State = System.Data.Entity.EntityState.Deleted;
-                db.SaveChanges();
+                try
+                {
+                    db.menus.Remove(menu);
+                    db.Entry(menu).State = System.Data.Entity.EntityState.Deleted;
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    return Ok("Failed!");
+                    throw;
+                }
+                
                 return Ok("Menu has been deleted!");
             }
             

@@ -26,7 +26,8 @@ namespace ArticleAPI.Controllers
 
 
         [HttpGet]
-        public IHttpActionResult GetAllUsers() {
+        public IHttpActionResult GetAllUsers()
+        {
 
             using (var db = new EntityContext())
             {
@@ -48,12 +49,25 @@ namespace ArticleAPI.Controllers
 
                 return Ok(users);
             }
-
-
         }
 
+        [HttpGet]
+        public IHttpActionResult GetAllWithRole()
+        {
 
-    
+            using (var db = new EntityContext())
+            {
+                
+                var users = db.ArtUsers.ToList();
+                foreach (var u in users)
+                {
+                    string sqlQuer = @"SELECT id, name, description FROM UserRole WHERE id = " + u.role_id;
+                    u.role = db.Database.SqlQuery<UserRole>(sqlQuer).Single();
+                }
+                return Ok(users);
+            }
+        }
+
         
         [HttpGet]
         public IHttpActionResult GetUserById(short id)
