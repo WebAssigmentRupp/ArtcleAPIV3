@@ -41,11 +41,11 @@ namespace ArticleAPI
 
             modelBuilder.Entity<category>()
                 .Property(e => e.name)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<category>()
                 .Property(e => e.description)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<category>()
                 .HasMany(e => e.posts)
@@ -55,7 +55,7 @@ namespace ArticleAPI
 
             modelBuilder.Entity<menu>()
                 .Property(e => e.title)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<menu>()
                 .HasMany(e => e.submenu)
@@ -64,15 +64,15 @@ namespace ArticleAPI
 
             modelBuilder.Entity<page>()
                 .Property(e => e.url)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<page>()
                 .Property(e => e.title)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<page>()
                 .Property(e => e.contents)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<page>()
                 .HasMany(e => e.menus)
@@ -82,19 +82,19 @@ namespace ArticleAPI
 
             modelBuilder.Entity<post>()
                 .Property(e => e.title)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<post>()
                 .Property(e => e.texts)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<post>()
                 .Property(e => e.image)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<post>()
                 .Property(e => e.author)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<UserRole>()
                 .HasMany(e => e.users)
