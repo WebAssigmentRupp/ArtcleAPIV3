@@ -61,8 +61,27 @@ namespace ArticleAPI.Controllers
             }
             foreach (var m in parent.submenu)
             {
+                m.page = getPage(m.page_id);
                 addSub(context, m);
             }
+        }
+        private page getPage(int page_id)
+        {
+            try
+            {
+                string sql = @"SELECT * FROM page WHERE id = " + page_id;
+                using (var db = new EntityContext())
+                {
+                    var p = db.Database.SqlQuery<page>(sql).Single();
+                    return p;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+                throw;
+            }
+           
         }
         [HttpGet]
         public IHttpActionResult Get() {
@@ -74,6 +93,7 @@ namespace ArticleAPI.Controllers
                 }
                 foreach (var m in menus)
                 {
+                    m.page = getPage(m.page_id);
                     addSub(db, m);
                 }
                 return Ok(menus);
