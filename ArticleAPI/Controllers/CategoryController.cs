@@ -77,9 +77,17 @@ namespace ArticleAPI.Controllers
                 {
                     return NotFound();
                 }
-                db.categories.Remove(cat);
-                db.SaveChanges();
-                return Ok("Category has been deleted!");
+                try
+                {
+                    db.categories.Remove(cat);
+                    db.Entry(cat).State = System.Data.Entity.EntityState.Deleted;
+                    db.SaveChanges();
+                    return Ok("Category has been deleted!");
+                }
+                catch (Exception ex) {
+                    return Json(new { DATA=0});
+                }
+               
             }
                
         }

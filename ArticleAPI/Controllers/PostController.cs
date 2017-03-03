@@ -135,7 +135,7 @@ namespace ArticleAPI.Controllers
                 db.posts.Remove(post);
                 db.Entry(post).State = System.Data.Entity.EntityState.Deleted;
                 db.SaveChanges();
-                db.SaveChanges();
+      
                 return Ok("Post has been deleted!");
             }
 
