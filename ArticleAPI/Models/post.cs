@@ -12,7 +12,6 @@ namespace ArticleAPI
         public short id { get; set; }
 
         [Required]
-        [StringLength(50)]
         public string title { get; set; }
 
         [Required]
