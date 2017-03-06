@@ -41,13 +41,7 @@ namespace ArticleAPI.Controllers
         [HttpGet]
         public IHttpActionResult GetAllPosts() {
             using (var db = new EntityContext()) {
-                //var p = db.posts.ToList<post>();
-                //if (p == null)
-                //{
-                //    return NotFound();
-                //}
-                //return Ok(p);
-
+              
               string sql= @"SELECT a.id,
                                   a.title,
                                   a.texts,
@@ -59,7 +53,7 @@ namespace ArticleAPI.Controllers
                                   a.author 
                                   FROM post a 
                                        INNER JOIN category b ON a.category_id = b.id 
-                                       INNER JOIN ArtUser c ON a.user_id=c.id";
+                                       INNER JOIN ArtUser c ON a.user_id=c.id ORDER By a.post_date DESC";
 
                var posts= db.Database.SqlQuery<mappingData>(sql).ToList();
 
@@ -137,6 +131,65 @@ namespace ArticleAPI.Controllers
                 db.SaveChanges();
       
                 return Ok("Post has been deleted!");
+            }
+
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetPostByCatId(int id) {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+            using (var db = new EntityContext())
+            {
+                string sql = @"SELECT a.id,
+                                  a.title,
+                                  a.texts,
+                                  a.image,
+                                  a.post_date,
+                                  a.category_id As cat_id,
+                                  b.name As category_name,
+                                  c.name As username,
+                                  a.author 
+                                  FROM post a 
+                                       INNER JOIN category b ON a.category_id = b.id 
+                                       INNER JOIN ArtUser c ON a.user_id=c.id WHERE b.id=" + id;
+
+                var posts = db.Database.SqlQuery<mappingData>(sql).ToList();
+                if (posts == null)
+                {
+                    return NotFound();
+                }
+                return Ok(posts);
+            }
+        }
+
+        [HttpGet]
+        public IHttpActionResult getOldPosts() {
+            using (var db = new EntityContext())
+            {
+
+                string sql = @"SELECT TOP 5
+                                  a.id,
+                                  a.title,
+                                  a.texts,
+                                  a.image,
+                                  a.post_date,
+                                  a.category_id As cat_id,
+                                  b.name As category_name,
+                                  c.name As username,
+                                  a.author 
+                                  FROM post a 
+                                       INNER JOIN category b ON a.category_id = b.id 
+                                       INNER JOIN ArtUser c ON a.user_id=c.id WHERE
+                                       a.post_date >= dateadd(d, datediff(d, 0, getdate())-1, 0) and
+                                       a.post_date < dateadd(d, datediff(d, 0, getdate()), 0)
+                                       ORDER BY a.post_date DESC";
+
+                var posts = db.Database.SqlQuery<mappingData>(sql).ToList();
+
+                return Ok(posts);
             }
 
         }
